@@ -32,10 +32,20 @@ class Database {
       })
   }
 
+  addEmployee(first_name, last_name, role_id, manager_id) {
+    this.connection.query("INSERT INTO employee SET ?", {
+        first_name: first_name,
+        last_name: last_name,
+        role_id: role_id,
+        manager_id: manager_id,
+    })
+  }
+
   endConnection() {
     this.connection.end();
 }
 }
 
 const db = new Database;
-db.addRole("Sales Force Specialist", 75000, 1);
+db.addEmployee("Joseph", "Perry", 1, 5);
+db.endConnection();
