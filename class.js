@@ -22,7 +22,18 @@ class Database {
           this.connection.end();
       })
   }
+
+  addRole(title, salary, department_id) {
+      this.connection.query("INSERT INTO role SET ?", {
+          title: title,
+          salary: salary,
+          department_id: department_id,
+      }, (err) => {
+          if (err) throw err;
+          this.connection.end();
+      })
+  }
 }
 
 const db = new Database;
-db.addDepartment("HR");
+db.addRole("Sales Force Specialist", 75000, 1);
