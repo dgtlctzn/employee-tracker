@@ -19,7 +19,6 @@ class Database {
           name: department,
       }, (err) => {
           if (err) throw err;
-          this.connection.end();
       })
   }
 
@@ -30,9 +29,12 @@ class Database {
           department_id: department_id,
       }, (err) => {
           if (err) throw err;
-          this.connection.end();
       })
   }
+
+  endConnection() {
+    this.connection.end();
+}
 }
 
 const db = new Database;
