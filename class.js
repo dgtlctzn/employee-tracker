@@ -95,9 +95,9 @@ class Database {
 
 module.exports = Database;
 
-const db = new Database();
-db.returnTable("title", "role").then((res) => {
-  console.log(res)
-});
-// db.addEmployee("Albert", "Einstien", "Scientist", 2);
-db.endConnection();
+// const db = new Database();
+// db.returnTable("title", "role").then((res) => {
+//   console.log(res)
+// });
+// // db.addEmployee("Albert", "Einstien", "Scientist", 2);
+// db.endConnection();

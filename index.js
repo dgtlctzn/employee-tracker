@@ -16,6 +16,7 @@ async function init() {
         db.endConnection();
         break;
       case "Add Employee":
+        const roles = await db.returnTable("title", "role");
         const {
           first_name,
           last_name,
@@ -33,9 +34,10 @@ async function init() {
             name: "last_name",
           },
           {
-            type: "input",
+            type: "list",
             message: "What is the employee's role?",
             name: "role",
+            choices: roles
           },
           {
             type: "input",
