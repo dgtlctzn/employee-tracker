@@ -88,14 +88,4 @@ class Database {
   }
 }
 
-const db = new Database();
-// db.viewTable("employee");
-db.updateEmployeeRole("Joseph Perry", 5);
-db.viewTable("employee");
-//   .then(() => {
-db.endConnection();
-//   })
-//   .catch((err) => {
-//     if (err) console.log(err);
-//   });
-// db.endConnection();
+module.exports = Database;
