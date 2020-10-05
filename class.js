@@ -45,7 +45,6 @@ class Database {
       "SELECT id FROM role WHERE title = ?",
       [role],
       (err, res) => {
-        // console.log(res)
         this.connection.query("INSERT INTO employee SET ?", {
           first_name: first_name,
           last_name: last_name,
@@ -54,22 +53,15 @@ class Database {
         });
       }
     );
-    // this.connection.query("INSERT INTO employee SET ?", {
-    //   first_name: first_name,
-    //   last_name: last_name,
-    //   role_id: role_id,
-    //   manager_id: manager_id,
-    // });
   }
 
-  viewTable(table) {
+  returnTable(column, table) {
     return new Promise((resolve, reject) => {
-      this.connection.query("SELECT * FROM ??", [table], (err, res) => {
+      this.connection.query(`SELECT ${column} FROM ${table}`, (err, res) => {
         if (err) {
           reject();
         }
-        console.table(res);
-        resolve();
+        resolve(res.map(item => item.title));
       });
     });
   }
@@ -104,5 +96,8 @@ class Database {
 module.exports = Database;
 
 const db = new Database();
-db.addEmployee("Albert", "Einstien", "Scientist", 2);
-// db.endConnection();
+db.returnTable("title", "role").then((res) => {
+  console.log(res)
+});
+// db.addEmployee("Albert", "Einstien", "Scientist", 2);
+db.endConnection();
