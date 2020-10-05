@@ -55,14 +55,32 @@ class Database {
     );
   }
 
-  returnTable(column, table) {
+  returnRoles(column, table) {
     return new Promise((resolve, reject) => {
-      this.connection.query("SELECT ?? FROM ??", [column, table], (err, res) => {
-        if (err) {
-          reject();
+      this.connection.query(
+        "SELECT ?? FROM ??",
+        [column, table],
+        (err, res) => {
+          if (err) {
+            reject();
+          }
+          resolve(res.map((item) => item.title));
         }
-        resolve(res.map(item => item.title));
-      });
+      );
+    });
+  }
+
+  returnEmployees() {
+    return new Promise((resolve, reject) => {
+      this.connection.query(
+        "SELECT first_name, last_name FROM employee",
+        (err, res) => {
+          if (err) {
+            reject();
+          }
+          resolve(res.map((item) => `${item.first_name} ${item.last_name}`));
+        }
+      );
     });
   }
 
@@ -70,20 +88,26 @@ class Database {
     const firstName = name.split(" ")[0];
     const lastName = name.split(" ")[1];
     this.connection.query(
-      "UPDATE employee SET ? WHERE ? AND ?",
-      [
-        {
-          role_id: role,
-        },
-        {
-          first_name: firstName,
-        },
-        {
-          last_name: lastName,
-        },
-      ],
+      "SELECT id FROM role WHERE title = ?",
+      [role],
       (err, res) => {
-        if (err) throw err;
+        this.connection.query(
+          "UPDATE employee SET ? WHERE ? AND ?",
+          [
+            {
+              role_id: res[0].id,
+            },
+            {
+              first_name: firstName,
+            },
+            {
+              last_name: lastName,
+            },
+          ],
+          (err, res) => {
+            if (err) throw err;
+          }
+        );
       }
     );
   }
@@ -96,8 +120,8 @@ class Database {
 module.exports = Database;
 
 // const db = new Database();
-// db.returnTable("title", "role").then((res) => {
+// db.returnEmployees().then((res) => {
 //   console.log(res)
 // });
-// // db.addEmployee("Albert", "Einstien", "Scientist", 2);
+// db.addEmployee("Albert", "Einstien", "Scientist", 2);
 // db.endConnection();

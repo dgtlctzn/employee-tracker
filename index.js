@@ -7,7 +7,12 @@ async function init() {
     const { choice } = await inquirer.prompt({
       type: "list",
       message: "What would you like to do?",
-      choices: ["View Departments", "Add Employee"],
+      choices: [
+        "View Departments",
+        "Add Employee",
+        "Remove Employee",
+        "Update Employee Role",
+      ],
       name: "choice",
     });
     switch (choice) {
@@ -16,7 +21,7 @@ async function init() {
         db.endConnection();
         break;
       case "Add Employee":
-        const roles = await db.returnTable("title", "role");
+        const roles = await db.returnRoles("title", "role");
         const {
           first_name,
           last_name,
@@ -37,7 +42,7 @@ async function init() {
             type: "list",
             message: "What is the employee's role?",
             name: "role",
-            choices: roles
+            choices: roles,
           },
           {
             type: "input",
@@ -48,6 +53,24 @@ async function init() {
         db.addEmployee(first_name, last_name, role, manager_id);
         // db.endConnection();
         break;
+      case "Update Employee Role":
+        const updateRoles = await db.returnRoles("title", "role");
+        const employees = await db.returnEmployees();
+        const {name, roleUpdate} = await inquirer.prompt([
+          {
+            type: "list",
+            message: "Which employee would you like to update?",
+            name: "name",
+            choices: employees,
+          },
+          {
+            type: "list",
+            message: "What is the employee's new role?",
+            choices: updateRoles,
+            name: "roleUpdate",
+          },
+        ]);
+        db.updateEmployeeRole(name, roleUpdate);
     }
 
     //   const db = new Database();
