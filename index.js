@@ -1,5 +1,3 @@
 const Database = require("./class")
+const inquirer = require("inquirer");
 
-const db = new Database();
-db.viewTable("role");
-db.endConnection();
