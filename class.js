@@ -41,11 +41,20 @@ class Database {
     })
   }
 
+  viewTable(table) {
+      this.connection.query(`SELECT * FROM ${table}`, (err, res) => {
+          if (err) throw err;
+          console.table(res);
+      })
+  }
+
   endConnection() {
     this.connection.end();
 }
 }
 
 const db = new Database;
-db.addEmployee("Joseph", "Perry", 1, 5);
+// db.addEmployee("Joseph", "Perry", 1, 5);
+// db.endConnection();
+db.viewTable("department");
 db.endConnection();
