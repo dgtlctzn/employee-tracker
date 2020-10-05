@@ -16,6 +16,29 @@ async function init() {
         db.endConnection();
         break;
       case "Add Employee":
+        const {first_name, last_name, role_id, manager_id} = await inquirer.prompt([
+          {
+            type: "input",
+            message: "What is the employee's first name?",
+            name: "first_name",
+          },
+          {
+            type: "input",
+            message: "What is the employee's last name?",
+            name: "last_name",
+          },
+          {
+            type: "input",
+            message: "What is the employee's role?",
+            name: "role_id",
+          },
+          {
+            type: "input",
+            message: "What is the manager's id of this employee?",
+            name: "manager_id",
+          },
+        ]);
+        db.addEmployee(first_name, last_name, role_id, manager_id);
         db.endConnection();
         break;
     }

@@ -40,13 +40,26 @@ class Database {
     );
   }
 
-  addEmployee(first_name, last_name, role_id, manager_id) {
-    this.connection.query("INSERT INTO employee SET ?", {
-      first_name: first_name,
-      last_name: last_name,
-      role_id: role_id,
-      manager_id: manager_id,
-    });
+  addEmployee(first_name, last_name, role, manager_id) {
+    this.connection.query(
+      "SELECT id FROM role WHERE title = ?",
+      [role],
+      (err, res) => {
+        // console.log(res)
+        this.connection.query("INSERT INTO employee SET ?", {
+          first_name: first_name,
+          last_name: last_name,
+          role_id: res[0].id,
+          manager_id: manager_id,
+        });
+      }
+    );
+    // this.connection.query("INSERT INTO employee SET ?", {
+    //   first_name: first_name,
+    //   last_name: last_name,
+    //   role_id: role_id,
+    //   manager_id: manager_id,
+    // });
   }
 
   viewTable(table) {
@@ -89,3 +102,7 @@ class Database {
 }
 
 module.exports = Database;
+
+const db = new Database();
+db.addEmployee("Albert", "Einstien", "Scientist", 2);
+// db.endConnection();
