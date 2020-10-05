@@ -57,7 +57,7 @@ class Database {
 
   returnTable(column, table) {
     return new Promise((resolve, reject) => {
-      this.connection.query(`SELECT ${column} FROM ${table}`, (err, res) => {
+      this.connection.query("SELECT ?? FROM ??", [column, table], (err, res) => {
         if (err) {
           reject();
         }
