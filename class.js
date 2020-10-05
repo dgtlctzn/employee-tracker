@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 
 class Database {
+    
   constructor() {
     this.connection = mysql.createConnection({
       host: "localhost",
@@ -15,46 +16,53 @@ class Database {
   }
 
   addDepartment(department) {
-      this.connection.query("INSERT INTO department SET ?", {
-          name: department,
-      }, (err) => {
-          if (err) throw err;
-      })
+    this.connection.query(
+      "INSERT INTO department SET ?",
+      {
+        name: department,
+      },
+      (err) => {
+        if (err) throw err;
+      }
+    );
   }
 
   addRole(title, salary, department_id) {
-      this.connection.query("INSERT INTO role SET ?", {
-          title: title,
-          salary: salary,
-          department_id: department_id,
-      }, (err) => {
-          if (err) throw err;
-      })
+    this.connection.query(
+      "INSERT INTO role SET ?",
+      {
+        title: title,
+        salary: salary,
+        department_id: department_id,
+      },
+      (err) => {
+        if (err) throw err;
+      }
+    );
   }
 
   addEmployee(first_name, last_name, role_id, manager_id) {
     this.connection.query("INSERT INTO employee SET ?", {
-        first_name: first_name,
-        last_name: last_name,
-        role_id: role_id,
-        manager_id: manager_id,
-    })
+      first_name: first_name,
+      last_name: last_name,
+      role_id: role_id,
+      manager_id: manager_id,
+    });
   }
 
   viewTable(table) {
+    return new Promise((resolve, reject) => {
       this.connection.query(`SELECT * FROM ${table}`, (err, res) => {
-          if (err) throw err;
-          console.table(res);
-      })
+        if (err) {
+          reject();
+        }
+        console.table(res);
+        resolve();
+      });
+    });
   }
 
   endConnection() {
     this.connection.end();
+  }
 }
-}
-
-const db = new Database;
-// db.addEmployee("Joseph", "Perry", 1, 5);
-// db.endConnection();
-db.viewTable("department");
-db.endConnection();
