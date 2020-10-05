@@ -112,6 +112,26 @@ class Database {
     );
   }
 
+  removeEmployee(name) {
+    const firstName = name.split(" ")[0];
+    const lastName = name.split(" ")[1];
+    this.connection.query(
+      "DELETE FROM employee WHERE ?",
+      [
+        {
+          first_name: firstName,
+        },
+        {
+          last_name: lastName,
+        },
+      ],
+      (err, res) => {
+        if (err) throw err;
+        console.log("success!");
+      }
+    );
+  }
+
   endConnection() {
     this.connection.end();
   }
@@ -120,6 +140,7 @@ class Database {
 module.exports = Database;
 
 // const db = new Database();
+// db.removeEmployee("Albert Einstien")
 // db.returnEmployees().then((res) => {
 //   console.log(res)
 // });
