@@ -61,17 +61,41 @@ class Database {
     });
   }
 
+  updateEmployeeRole(name, role) {
+    const firstName = name.split(" ")[0];
+    const lastName = name.split(" ")[1];
+    this.connection.query(
+      "UPDATE employee SET ? WHERE ? AND ?",
+      [
+        {
+          role_id: role,
+        },
+        {
+          first_name: firstName,
+        },
+        {
+          last_name: lastName,
+        },
+      ],
+      (err, res) => {
+        if (err) throw err;
+      }
+    );
+  }
+
   endConnection() {
     this.connection.end();
   }
 }
 
 const db = new Database();
-db.viewTable("role")
-  .then(() => {
-    db.endConnection();
-  })
-  .catch((err) => {
-    if (err) console.log(err);
-  });
+// db.viewTable("employee");
+db.updateEmployeeRole("Joseph Perry", 5);
+db.viewTable("employee");
+//   .then(() => {
+db.endConnection();
+//   })
+//   .catch((err) => {
+//     if (err) console.log(err);
+//   });
 // db.endConnection();
