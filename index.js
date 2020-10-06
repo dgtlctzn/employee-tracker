@@ -39,6 +39,7 @@ async function init() {
           "Add Employee",
           "Remove Employee",
           "Update Employee Role",
+          "Add Department",
           "Exit"
         ],
         name: "choice",
@@ -123,6 +124,16 @@ async function init() {
               choices: employeeList,
             });
           db.removeEmployee(nameToDelete);
+          break;
+        case "Add Department":
+          const {deptName} = await inquirer.prompt(
+            {
+              type: "input",
+              message: "What is the name of the department you would like to add?",
+              name: "deptName",
+            });
+          db.addDepartment(deptName);
+          break;
         default:
           db.endConnection();
           await printEMS("Goodbye!", "Dr Pepper");
