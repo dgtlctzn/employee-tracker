@@ -57,16 +57,19 @@ class Database {
 
   viewEmployees() {
     return new Promise((resolve, reject) => {
-      this.connection.query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name
+      this.connection.query(
+        `SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name
       FROM employee
       INNER JOIN role ON role.id = employee.role_id
-      INNER JOIN department on department.id = role.department_id;`, (err, res) => {
-        if (err) {
-          reject();
+      INNER JOIN department on department.id = role.department_id;`,
+        (err, res) => {
+          if (err) {
+            reject();
+          }
+          console.table(res);
+          resolve();
         }
-        console.table(res);
-        resolve();
-      });
+      );
     });
   }
 
@@ -101,20 +104,51 @@ class Database {
 
   returnDepartments() {
     return new Promise((resolve, reject) => {
-      this.connection.query(
-        "SELECT name FROM department",
-        (err, res) => {
-          if (err) {
-            reject();
-          }
-          resolve(res.map((item) => item.name));
+      this.connection.query("SELECT name FROM department", (err, res) => {
+        if (err) {
+          reject();
         }
-      );
+        resolve(res.map((item) => item.name));
+      });
     });
   }
 
-  viewEmployeeByDepartment() {
-
+  viewEmployeesByDepartment(department) {
+    return new Promise((resolve, reject) => {
+      this.connection.query(
+        "SELECT id FROM department WHERE name = ?",
+        [department],
+        (err, resOne) => {
+          if (err) {
+            reject();
+          }
+          this.connection.query(
+            "SELECT id FROM role WHERE department_id = ?",
+            [resOne[0].id],
+            (err, resTwo) => {
+              if (err) {
+                reject();
+              }
+              this.connection.query(
+                `SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name
+          FROM employee
+          INNER JOIN role ON role.id = employee.role_id
+          INNER JOIN department on department.id = role.department_id
+          WHERE employee.role_id = ?`,
+                [resTwo[0].id],
+                (err, resThree) => {
+                  if (err) {
+                    reject();
+                  }
+                  console.table(resThree);
+                  resolve();
+                }
+              );
+            }
+          );
+        }
+      );
+    });
   }
 
   updateEmployeeRole(name, role) {
@@ -182,5 +216,8 @@ module.exports = Database;
 // db.viewEmployees().then((res) => {
 //   console.log("done")
 // });
-// db.addEmployee("Albert", "Einstien", "Scientist", 2);
+// db.viewEmployeesByDepartment("Farming").then((res) => {
+//   console.log("done");
+// });
+// db.addEmployee("Johnny", "Appleseed", "Farmer", 5);
 // db.endConnection();
