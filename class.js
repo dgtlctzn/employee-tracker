@@ -235,6 +235,18 @@ class Database {
     );
   }
 
+  removeDepartment(depmt) {
+    this.connection.query(
+      "DELETE FROM department WHERE ?",
+        {
+          name: depmt,
+        },
+      (err, res) => {
+        if (err) throw err;
+      }
+    );
+  }
+
   endConnection() {
     this.connection.end();
   }

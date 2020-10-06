@@ -47,6 +47,7 @@ async function init() {
           "Remove Role",
           "Add Department",
           "View Departments",
+          "Remove Department",
           "Exit",
         ],
         name: "choice",
@@ -171,6 +172,17 @@ async function init() {
           break;
         case "View Departments":
           await db.viewDepartments();
+          break;
+        case "Remove Department":
+          availDept = await db.returnDepartments();
+          let { deptToDelete } = await inquirer.prompt({
+            type: "list",
+            message:
+              "What is the name of the department you would like to delete?",
+            choices: availDept,
+            name: "deptToDelete",
+          });
+          db.removeDepartment(deptToDelete);
           break;
         default:
           db.endConnection();
