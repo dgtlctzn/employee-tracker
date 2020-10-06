@@ -30,7 +30,7 @@ async function init() {
           choices: departments,
           name: "department",
         });
-        console.log("here");
+        await db.viewEmployeesByDepartment(department);
         break;
       case "View Departments":
         await db.viewTable("department");
