@@ -73,6 +73,18 @@ class Database {
     });
   }
 
+  viewDepartments() {
+    return new Promise((resolve, reject) => {
+      this.connection.query("SELECT * FROM departments", (err, res) => {
+        if (err) {
+          reject();
+        }
+        console.table("\x1b[32m", res);
+        resolve();
+      });
+    });
+  }
+
   returnRoles(column, table) {
     return new Promise((resolve, reject) => {
       this.connection.query(
