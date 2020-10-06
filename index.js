@@ -1,8 +1,39 @@
 const Database = require("./class");
 const inquirer = require("inquirer");
+const figlet = require("figlet");
+
+// figlet.fonts(function(err, fonts) {
+//   if (err) {
+//       console.log('something went wrong...');
+//       console.dir(err);
+//       return;
+//   }
+//   console.dir(fonts);
+// });
+
+function printEMS (text) {
+  return new Promise((resolve, reject) => {
+    figlet.text(text, {
+      font: 'DOS Rebel',
+      horizontalLayout: 'default',
+      verticalLayout: 'default',
+      width: "300",
+      whitespaceBreak: true
+    }, function(err, data) {
+      if (err) {
+          console.log('Something went wrong...');
+          console.dir(err);
+          reject();
+      }
+      console.log(data);
+      resolve();
+    });
+  })
+}
 
 async function init() {
   try {
+    await printEMS("E.M.S.");
     const db = new Database();
     let done = false;
     while(!done) {
@@ -102,7 +133,7 @@ async function init() {
           db.removeEmployee(nameToDelete);
         default:
           db.endConnection();
-          console.log("Goodbye!")
+          await printEMS("Goodbye!");
           done = true;
       }
     }
