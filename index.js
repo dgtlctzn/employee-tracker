@@ -3,10 +3,10 @@ const inquirer = require("inquirer");
 const figlet = require("figlet");
 const cTable = require("console.table");
 
-function printEMS (text) {
+function printEMS (text, style) {
   return new Promise((resolve, reject) => {
     figlet.text(text, {
-      font: 'DOS Rebel',
+      font: style,
       horizontalLayout: 'default',
       verticalLayout: 'default',
       width: "300",
@@ -25,7 +25,7 @@ function printEMS (text) {
 
 async function init() {
   try {
-    await printEMS("E.M.S.");
+    await printEMS("E.M.S.", "DOS Rebel");
     const db = new Database();
     let done = false;
     while(!done) {
@@ -125,7 +125,7 @@ async function init() {
           db.removeEmployee(nameToDelete);
         default:
           db.endConnection();
-          await printEMS("Goodbye!");
+          await printEMS("Goodbye!", "Dr Pepper");
           done = true;
       }
     }
