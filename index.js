@@ -8,6 +8,7 @@ async function init() {
       type: "list",
       message: "What would you like to do?",
       choices: [
+        "View All Employees",
         "View Departments",
         "Add Employee",
         "Remove Employee",
@@ -16,6 +17,9 @@ async function init() {
       name: "choice",
     });
     switch (choice) {
+      case "View All Employees":
+        await db.viewEmployees();
+        break;
       case "View Departments":
         await db.viewTable("department");
         db.endConnection();

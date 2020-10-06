@@ -155,13 +155,13 @@ class Database {
 
 module.exports = Database;
 
-const db = new Database();
+// const db = new Database();
 // db.removeEmployee("Albert Einstien")
 // db.returnEmployees().then((res) => {
 //   console.log(res)
 // });
-db.viewEmployees().then((res) => {
-  console.log("done")
-});
+// db.viewEmployees().then((res) => {
+//   console.log("done")
+// });
 // db.addEmployee("Albert", "Einstien", "Scientist", 2);
 // db.endConnection();
