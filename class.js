@@ -66,7 +66,7 @@ class Database {
           if (err) {
             reject();
           }
-          console.table(res);
+          console.table("\x1b[32m", res);
           resolve();
         }
       );
@@ -140,7 +140,7 @@ class Database {
                   if (err) {
                     reject();
                   }
-                  console.table(resThree);
+                  console.table("\x1b[32m", resThree);
                   resolve();
                 }
               );
@@ -180,7 +180,6 @@ class Database {
   }
 
   removeEmployee(name) {
-    console.log(name);
     const firstName = name.split(" ")[0];
     const lastName = name.split(" ")[1];
     this.connection.query(
@@ -195,7 +194,6 @@ class Database {
       ],
       (err, res) => {
         if (err) throw err;
-        console.log("success!");
       }
     );
   }

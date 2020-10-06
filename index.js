@@ -1,15 +1,7 @@
 const Database = require("./class");
 const inquirer = require("inquirer");
 const figlet = require("figlet");
-
-// figlet.fonts(function(err, fonts) {
-//   if (err) {
-//       console.log('something went wrong...');
-//       console.dir(err);
-//       return;
-//   }
-//   console.dir(fonts);
-// });
+const cTable = require("console.table");
 
 function printEMS (text) {
   return new Promise((resolve, reject) => {
