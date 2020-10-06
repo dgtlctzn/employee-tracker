@@ -31,17 +31,12 @@ class Database {
       "SELECT id FROM department WHERE name = ?",
       [department],
       (err, res) => {
-        this.connection.query(
-          "INSERT INTO role SET ?",
-          {
-            title: title,
-            salary: salary,
-            department_id: res[0].id,
-          },
-          (err) => {
-            if (err) throw err;
-          }
-        );
+        // console.log(res[0].id)
+        this.connection.query("INSERT INTO role SET ?", {
+          title: title,
+          salary: salary,
+          department_id: res[0].id,
+        });
       }
     );
   }
@@ -224,6 +219,7 @@ class Database {
 module.exports = Database;
 
 // const db = new Database();
+// db.addRole("Planter", 20000, "Farming");
 // db.viewDepartments().then(console.log("ok"));
 // db.returnDepartments().then((res) => {console.log(res)});
 // db.removeEmployee("Albert Einstien")

@@ -115,7 +115,26 @@ async function init() {
           ]);
           db.updateEmployeeRole(name, roleUpdate);
         case "Add Role":
-          
+          const roleDepartments = await db.returnDepartments();
+          let { roleTitle, departmentChoice, roleSalary } = await inquirer.prompt([
+            {
+              type: "input",
+              message: "What is the title of this role?",
+              name: "roleTitle",
+            },
+            {
+              type: "list",
+              message: "Which department is this role under?",
+              name: "departmentChoice",
+              choices: roleDepartments,
+            },
+            {
+              type: "input",
+              message: "What is the salary of this role?",
+              name: "roleSalary",
+            }]);
+          db.addRole(roleTitle, roleSalary, departmentChoice);
+          break;
         case "Remove Employee":
           let employeeList = await db.returnEmployees();
           const { nameToDelete } = await inquirer.prompt({
