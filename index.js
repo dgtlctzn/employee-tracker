@@ -55,8 +55,8 @@ async function init() {
         break;
       case "Update Employee Role":
         const updateRoles = await db.returnRoles("title", "role");
-        const employees = await db.returnEmployees();
-        const {name, roleUpdate} = await inquirer.prompt([
+        let employees = await db.returnEmployees();
+        let {name, roleUpdate} = await inquirer.prompt([
           {
             type: "list",
             message: "Which employee would you like to update?",
@@ -71,6 +71,16 @@ async function init() {
           },
         ]);
         db.updateEmployeeRole(name, roleUpdate);
+      case "Remove Employee":
+        let employeeList = await db.returnEmployees();
+        const {nameToDelete} = await inquirer.prompt(
+          {
+            type: "list",
+            message: "Which employee would you like to remove?",
+            name: "nameToDelete",
+            choices: employeeList,
+          });
+        db.removeEmployee(nameToDelete);
     }
 
     //   const db = new Database();

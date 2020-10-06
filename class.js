@@ -113,6 +113,7 @@ class Database {
   }
 
   removeEmployee(name) {
+    console.log(name);
     const firstName = name.split(" ")[0];
     const lastName = name.split(" ")[1];
     this.connection.query(
