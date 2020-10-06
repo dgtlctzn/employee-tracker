@@ -26,3 +26,22 @@ CREATE TABLE employee (
     manager_id INT,
     PRIMARY KEY (id)
 );
+
+SELECT * FROM department;
+SELECT * FROM role;
+SELECT * FROM employee;
+SELECT * FROM employee WHERE first_name = "Joseph" AND last_name = "Perry";
+SELECT id from role WHERE title = "Cook";
+
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUE ("Greg", "Turkington", 4, 1);
+
+SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name
+FROM employee
+INNER JOIN role ON role.id = employee.role_id
+INNER JOIN department on department.id = role.department_id
+WHERE employee.role_id = 3;
+
+SELECT id FROM department WHERE name = "Farming";
+SELECT id FROM role WHERE department_id = 7;
+SELECT * FROM employee WHERE role_id = 3;
