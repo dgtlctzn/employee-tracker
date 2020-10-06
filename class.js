@@ -26,16 +26,22 @@ class Database {
     );
   }
 
-  addRole(title, salary, department_id) {
+  addRole(title, salary, department) {
     this.connection.query(
-      "INSERT INTO role SET ?",
-      {
-        title: title,
-        salary: salary,
-        department_id: department_id,
-      },
-      (err) => {
-        if (err) throw err;
+      "SELECT id FROM department WHERE name = ?",
+      [department],
+      (err, res) => {
+        this.connection.query(
+          "INSERT INTO role SET ?",
+          {
+            title: title,
+            salary: salary,
+            department_id: res[0].id,
+          },
+          (err) => {
+            if (err) throw err;
+          }
+        );
       }
     );
   }
@@ -75,7 +81,7 @@ class Database {
 
   viewDepartments() {
     return new Promise((resolve, reject) => {
-      this.connection.query("SELECT * FROM departments", (err, res) => {
+      this.connection.query("SELECT * FROM department", (err, res) => {
         if (err) {
           reject();
         }
@@ -218,6 +224,7 @@ class Database {
 module.exports = Database;
 
 // const db = new Database();
+// db.viewDepartments().then(console.log("ok"));
 // db.returnDepartments().then((res) => {console.log(res)});
 // db.removeEmployee("Albert Einstien")
 // db.returnEmployees().then((res) => {

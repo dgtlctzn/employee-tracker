@@ -3,24 +3,28 @@ const inquirer = require("inquirer");
 const figlet = require("figlet");
 const cTable = require("console.table");
 
-function printEMS (text, style) {
+function printEMS(text, style) {
   return new Promise((resolve, reject) => {
-    figlet.text(text, {
-      font: style,
-      horizontalLayout: 'default',
-      verticalLayout: 'default',
-      width: "300",
-      whitespaceBreak: true
-    }, function(err, data) {
-      if (err) {
-          console.log('Something went wrong...');
+    figlet.text(
+      text,
+      {
+        font: style,
+        horizontalLayout: "default",
+        verticalLayout: "default",
+        width: "300",
+        whitespaceBreak: true,
+      },
+      function (err, data) {
+        if (err) {
+          console.log("Something went wrong...");
           console.dir(err);
           reject();
+        }
+        console.log(data);
+        resolve();
       }
-      console.log(data);
-      resolve();
-    });
-  })
+    );
+  });
 }
 
 async function init() {
@@ -28,19 +32,20 @@ async function init() {
     await printEMS("E.M.S.", "DOS Rebel");
     const db = new Database();
     let done = false;
-    while(!done) {
+    while (!done) {
       const { choice } = await inquirer.prompt({
         type: "list",
         message: "What would you like to do?",
         choices: [
           "View All Employees",
           "View Employees by Department",
-          "View Departments",
           "Add Employee",
           "Remove Employee",
           "Update Employee Role",
+          "Add Role",
           "Add Department",
-          "Exit"
+          "View Departments",
+          "Exit",
         ],
         name: "choice",
       });
@@ -49,19 +54,14 @@ async function init() {
           await db.viewEmployees();
           break;
         case "View Employees by Department":
-          const departments = await db.returnDepartments()
-          const {department} = await inquirer.prompt(
-          {
+          const departments = await db.returnDepartments();
+          const { department } = await inquirer.prompt({
             type: "list",
             message: "What department would you like to search by?",
             choices: departments,
             name: "department",
           });
           await db.viewEmployeesByDepartment(department);
-          break;
-        case "View Departments":
-          await db.viewTable("department");
-          db.endConnection();
           break;
         case "Add Employee":
           const roles = await db.returnRoles("title", "role");
@@ -99,7 +99,7 @@ async function init() {
         case "Update Employee Role":
           const updateRoles = await db.returnRoles("title", "role");
           let employees = await db.returnEmployees();
-          let {name, roleUpdate} = await inquirer.prompt([
+          let { name, roleUpdate } = await inquirer.prompt([
             {
               type: "list",
               message: "Which employee would you like to update?",
@@ -114,25 +114,29 @@ async function init() {
             },
           ]);
           db.updateEmployeeRole(name, roleUpdate);
+        case "Add Role":
+          
         case "Remove Employee":
           let employeeList = await db.returnEmployees();
-          const {nameToDelete} = await inquirer.prompt(
-            {
-              type: "list",
-              message: "Which employee would you like to remove?",
-              name: "nameToDelete",
-              choices: employeeList,
-            });
+          const { nameToDelete } = await inquirer.prompt({
+            type: "list",
+            message: "Which employee would you like to remove?",
+            name: "nameToDelete",
+            choices: employeeList,
+          });
           db.removeEmployee(nameToDelete);
           break;
         case "Add Department":
-          const {deptName} = await inquirer.prompt(
-            {
-              type: "input",
-              message: "What is the name of the department you would like to add?",
-              name: "deptName",
-            });
+          const { deptName } = await inquirer.prompt({
+            type: "input",
+            message:
+              "What is the name of the department you would like to add?",
+            name: "deptName",
+          });
           db.addDepartment(deptName);
+          break;
+        case "View Departments":
+          await db.viewDepartments();
           break;
         default:
           db.endConnection();
