@@ -98,11 +98,10 @@ class Database {
     });
   }
 
-  returnRoles(column, table) {
+  returnRoles() {
     return new Promise((resolve, reject) => {
       this.connection.query(
-        "SELECT ?? FROM ??",
-        [column, table],
+        "SELECT title FROM role",
         (err, res) => {
           if (err) {
             reject();
@@ -218,6 +217,18 @@ class Database {
           last_name: lastName,
         },
       ],
+      (err, res) => {
+        if (err) throw err;
+      }
+    );
+  }
+
+  removeRole(role) {
+    this.connection.query(
+      "DELETE FROM role WHERE ?",
+        {
+          title: role,
+        },
       (err, res) => {
         if (err) throw err;
       }

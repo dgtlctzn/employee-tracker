@@ -44,6 +44,7 @@ async function init() {
           "Update Employee Role",
           "Add Role",
           "View Roles",
+          "Remove Role",
           "Add Department",
           "View Departments",
           "Exit",
@@ -55,7 +56,7 @@ async function init() {
           await db.viewEmployees();
           break;
         case "View Employees by Department":
-          const departments = await db.returnDepartments();
+          let departments = await db.returnDepartments();
           const { department } = await inquirer.prompt({
             type: "list",
             message: "What department would you like to search by?",
@@ -148,6 +149,16 @@ async function init() {
           break;
         case "View Roles":
           await db.viewRoles();
+          break;
+        case "Remove Role":
+          let roleList = await db.returnRoles();
+          const { roleToDelete } = await inquirer.prompt({
+            type: "list",
+            message: "Which role would you like to remove?",
+            name: "roleToDelete",
+            choices: roleList,
+          });
+          db.removeRole(roleToDelete);
           break;
         case "Add Department":
           const { deptName } = await inquirer.prompt({
