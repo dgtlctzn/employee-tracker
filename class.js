@@ -99,6 +99,24 @@ class Database {
     });
   }
 
+  returnDepartments() {
+    return new Promise((resolve, reject) => {
+      this.connection.query(
+        "SELECT name FROM department",
+        (err, res) => {
+          if (err) {
+            reject();
+          }
+          resolve(res.map((item) => item.name));
+        }
+      );
+    });
+  }
+
+  viewEmployeeByDepartment() {
+
+  }
+
   updateEmployeeRole(name, role) {
     const firstName = name.split(" ")[0];
     const lastName = name.split(" ")[1];
@@ -156,6 +174,7 @@ class Database {
 module.exports = Database;
 
 // const db = new Database();
+// db.returnDepartments().then((res) => {console.log(res)});
 // db.removeEmployee("Albert Einstien")
 // db.returnEmployees().then((res) => {
 //   console.log(res)
