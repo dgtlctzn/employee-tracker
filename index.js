@@ -9,6 +9,7 @@ async function init() {
       message: "What would you like to do?",
       choices: [
         "View All Employees",
+        "View Employees by Department",
         "View Departments",
         "Add Employee",
         "Remove Employee",
@@ -19,6 +20,17 @@ async function init() {
     switch (choice) {
       case "View All Employees":
         await db.viewEmployees();
+        break;
+      case "View Employees by Department":
+        const departments = await db.returnDepartments()
+        const {department} = await inquirer.prompt(
+        {
+          type: "list",
+          message: "What department would you like to search by?",
+          choices: departments,
+          name: "department",
+        });
+        console.log("here");
         break;
       case "View Departments":
         await db.viewTable("department");
