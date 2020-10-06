@@ -55,6 +55,21 @@ class Database {
     );
   }
 
+  viewEmployees() {
+    return new Promise((resolve, reject) => {
+      this.connection.query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name
+      FROM employee
+      INNER JOIN role ON role.id = employee.role_id
+      INNER JOIN department on department.id = role.department_id;`, (err, res) => {
+        if (err) {
+          reject();
+        }
+        console.table(res);
+        resolve();
+      });
+    });
+  }
+
   returnRoles(column, table) {
     return new Promise((resolve, reject) => {
       this.connection.query(
@@ -140,10 +155,13 @@ class Database {
 
 module.exports = Database;
 
-// const db = new Database();
+const db = new Database();
 // db.removeEmployee("Albert Einstien")
 // db.returnEmployees().then((res) => {
 //   console.log(res)
 // });
+db.viewEmployees().then((res) => {
+  console.log("done")
+});
 // db.addEmployee("Albert", "Einstien", "Scientist", 2);
 // db.endConnection();
