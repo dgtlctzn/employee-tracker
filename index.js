@@ -43,6 +43,7 @@ async function init() {
           "Remove Employee",
           "Update Employee Role",
           "Add Role",
+          "View Roles",
           "Add Department",
           "View Departments",
           "Exit",
@@ -144,6 +145,9 @@ async function init() {
             choices: employeeList,
           });
           db.removeEmployee(nameToDelete);
+          break;
+        case "View Roles":
+          await db.viewRoles();
           break;
         case "Add Department":
           const { deptName } = await inquirer.prompt({

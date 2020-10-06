@@ -86,6 +86,18 @@ class Database {
     });
   }
 
+  viewRoles() {
+    return new Promise((resolve, reject) => {
+      this.connection.query("SELECT * FROM role", (err, res) => {
+        if (err) {
+          reject();
+        }
+        console.table("\x1b[32m", res);
+        resolve();
+      });
+    });
+  }
+
   returnRoles(column, table) {
     return new Promise((resolve, reject) => {
       this.connection.query(
@@ -127,6 +139,7 @@ class Database {
   }
 
   viewEmployeesByDepartment(department) {
+    //FIXME:
     return new Promise((resolve, reject) => {
       this.connection.query(
         "SELECT id FROM department WHERE name = ?",
