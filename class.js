@@ -191,6 +191,37 @@ class Database {
     });
   }
 
+  viewEmployeesByManager(manager) {
+    return new Promise((resolve, reject) => {
+      const managerFirstName = manager.split(" ")[0];
+      const managerLastName = manager.split(" ")[1];
+      this.connection.query(
+        "SELECT id FROM employee WHERE ?",
+        [
+          {
+            first_name: managerFirstName,
+          },
+          {
+            last_name: managerLastName,
+          },
+        ],
+        (err, resOne) => {
+          if (err) {
+            reject();
+          }
+          this.connection.query("SELECT * FROM employee WHERE manager_id = ?", [resOne[0].id],
+            (err, resTwo) => {
+              if (err) {
+                reject();
+              }
+              console.table("\x1b[32m", resTwo);
+              resolve();
+            });
+        }
+      );
+    });
+  }
+
   updateEmployeeRole(name, role) {
     const firstName = name.split(" ")[0];
     const lastName = name.split(" ")[1];
@@ -269,7 +300,8 @@ class Database {
 
 module.exports = Database;
 
-const db = new Database();
+// const db = new Database();
+// db.viewEmployeesByManager("Joseph Perry");
 // db.addRole("Planter", 20000, "Farming");
 // db.viewDepartments().then(console.log("ok"));
 // db.returnDepartments().then((res) => {console.log(res)});

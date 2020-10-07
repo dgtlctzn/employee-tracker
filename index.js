@@ -39,6 +39,7 @@ async function init() {
         choices: [
           "View All Employees",
           "View Employees by Department",
+          "View Employees by Manager",
           "Add Employee",
           "Remove Employee",
           "Update Employee Role",
@@ -65,6 +66,16 @@ async function init() {
             name: "department",
           });
           await db.viewEmployeesByDepartment(department);
+          break;
+        case "View Employees by Manager":
+          let managers = await db.returnEmployees();
+          const { managerPick } = await inquirer.prompt({
+            type: "list",
+            message: "Which manager would you like to search by?",
+            choices: managers,
+            name: "managerPick",
+          });
+          await db.viewEmployeesByManager(managerPick);
           break;
         case "Add Employee":
           let roles = await db.returnRoles();
