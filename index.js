@@ -67,7 +67,7 @@ async function init() {
           await db.viewEmployeesByDepartment(department);
           break;
         case "Add Employee":
-          const roles = await db.returnRoles("title", "role");
+          const roles = await db.returnRoles();
           const {
             first_name,
             last_name,
@@ -100,7 +100,7 @@ async function init() {
           // db.endConnection();
           break;
         case "Update Employee Role":
-          const updateRoles = await db.returnRoles("title", "role");
+          const updateRoles = await db.returnRoles();
           let employees = await db.returnEmployees();
           let { name, roleUpdate } = await inquirer.prompt([
             {
