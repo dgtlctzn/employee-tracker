@@ -37,7 +37,7 @@
   ## Usage
   The following is a link to the walkthrough of the E.M.S. application:
   
-  [link.com](screencastify)
+  [Screencastify Walkthrough](https://drive.google.com/file/d/1lHQxHhFPyDiFzz5x-H0gvJrTcl7hU81F/view)
   ## Contributing
   The E.M.S. application relies on the Inquirer package to handle CLI prompts, figlet for the logo generation, console.table for the custom table printing in the console, and mysql to handle the JavaScript and MySQL connection.
   ## Tests
