@@ -133,6 +133,7 @@ async function init() {
             },
           ]);
           db.updateEmployeeRole(name, roleUpdate);
+          break;
         case "Add Role":
           const roleDepartments = await db.returnDepartments();
           let { roleTitle, departmentChoice, roleSalary } = await inquirer.prompt([
