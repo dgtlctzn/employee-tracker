@@ -3,6 +3,7 @@ const inquirer = require("inquirer");
 const figlet = require("figlet");
 const cTable = require("console.table");
 
+// prints 3D message to console
 function printEMS(text, style) {
   return new Promise((resolve, reject) => {
     figlet.text(
@@ -27,6 +28,7 @@ function printEMS(text, style) {
   });
 }
 
+// main async function calling Database class methods
 async function init() {
   try {
     await printEMS("E.M.S.", "DOS Rebel");
@@ -53,6 +55,8 @@ async function init() {
         ],
         name: "choice",
       });
+      // switch case handles all options from main menu
+      // default ends sql connection
       switch (choice) {
         case "View All Employees":
           await db.viewEmployees();
@@ -109,7 +113,6 @@ async function init() {
               name: "manager",
             },
           ]);
-          // console.log(first_name, last_name, role, manager);
           db.addEmployee(first_name, last_name, role, manager);
           break;
         case "Update Employee Role":
@@ -209,5 +212,5 @@ async function init() {
     }
   }
 }
-
+// main call
 init();

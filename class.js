@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 
 class Database {
+  //main sql connection for all methods
   constructor() {
     this.connection = mysql.createConnection({
       host: "localhost",
@@ -57,7 +58,6 @@ class Database {
         },
       ],
       (err, resOne) => {
-        // console.log(resOne);
         this.connection.query(
           "SELECT id FROM role WHERE title = ?",
           [role],
@@ -153,7 +153,6 @@ class Database {
   }
 
   viewEmployeesByDepartment(department) {
-    //FIXME:
     return new Promise((resolve, reject) => {
       this.connection.query(
         "SELECT id FROM department WHERE name = ?",
@@ -299,21 +298,3 @@ class Database {
 }
 
 module.exports = Database;
-
-// const db = new Database();
-// db.viewEmployeesByManager("Joseph Perry");
-// db.addRole("Planter", 20000, "Farming");
-// db.viewDepartments().then(console.log("ok"));
-// db.returnDepartments().then((res) => {console.log(res)});
-// db.removeEmployee("Albert Einstien")
-// db.returnEmployees().then((res) => {
-//   console.log(res)
-// });
-// db.viewEmployees().then((res) => {
-//   console.log("done")
-// });
-// db.viewEmployeesByDepartment("Farming").then((res) => {
-//   console.log("done");
-// });
-// db.addEmployee("Albert", "Einstein", "Scientist", "Melissa Perry");
-// db.endConnection();
