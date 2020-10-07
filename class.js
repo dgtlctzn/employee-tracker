@@ -41,17 +41,35 @@ class Database {
     );
   }
 
-  addEmployee(first_name, last_name, role, manager_id) {
+  addEmployee(first, last, role, manager) {
+    const managerFirstName = manager.split(" ")[0];
+    const managerLastName = manager.split(" ")[1];
+    // console.log(managerFirstName);
+    // console.log(managerLastName);
     this.connection.query(
-      "SELECT id FROM role WHERE title = ?",
-      [role],
-      (err, res) => {
-        this.connection.query("INSERT INTO employee SET ?", {
-          first_name: first_name,
-          last_name: last_name,
-          role_id: res[0].id,
-          manager_id: manager_id,
-        });
+      "SELECT id FROM employee WHERE ?",
+      [
+        {
+          first_name: managerFirstName,
+        },
+        {
+          last_name: managerLastName,
+        },
+      ],
+      (err, resOne) => {
+        // console.log(resOne);
+        this.connection.query(
+          "SELECT id FROM role WHERE title = ?",
+          [role],
+          (err, resTwo) => {
+            this.connection.query("INSERT INTO employee SET ?", {
+              first_name: first,
+              last_name: last,
+              role_id: resTwo[0].id,
+              manager_id: resOne[0].id,
+            });
+          }
+        );
       }
     );
   }
@@ -100,15 +118,12 @@ class Database {
 
   returnRoles() {
     return new Promise((resolve, reject) => {
-      this.connection.query(
-        "SELECT title FROM role",
-        (err, res) => {
-          if (err) {
-            reject();
-          }
-          resolve(res.map((item) => item.title));
+      this.connection.query("SELECT title FROM role", (err, res) => {
+        if (err) {
+          reject();
         }
-      );
+        resolve(res.map((item) => item.title));
+      });
     });
   }
 
@@ -226,9 +241,9 @@ class Database {
   removeRole(role) {
     this.connection.query(
       "DELETE FROM role WHERE ?",
-        {
-          title: role,
-        },
+      {
+        title: role,
+      },
       (err, res) => {
         if (err) throw err;
       }
@@ -238,9 +253,9 @@ class Database {
   removeDepartment(depmt) {
     this.connection.query(
       "DELETE FROM department WHERE ?",
-        {
-          name: depmt,
-        },
+      {
+        name: depmt,
+      },
       (err, res) => {
         if (err) throw err;
       }
@@ -254,7 +269,7 @@ class Database {
 
 module.exports = Database;
 
-// const db = new Database();
+const db = new Database();
 // db.addRole("Planter", 20000, "Farming");
 // db.viewDepartments().then(console.log("ok"));
 // db.returnDepartments().then((res) => {console.log(res)});
@@ -268,5 +283,5 @@ module.exports = Database;
 // db.viewEmployeesByDepartment("Farming").then((res) => {
 //   console.log("done");
 // });
-// db.addEmployee("Johnny", "Appleseed", "Farmer", 5);
+// db.addEmployee("Albert", "Einstein", "Scientist", "Melissa Perry");
 // db.endConnection();

@@ -67,12 +67,13 @@ async function init() {
           await db.viewEmployeesByDepartment(department);
           break;
         case "Add Employee":
-          const roles = await db.returnRoles();
-          const {
+          let roles = await db.returnRoles();
+          let managerList = await db.returnEmployees();
+          let {
             first_name,
             last_name,
             role,
-            manager_id,
+            manager,
           } = await inquirer.prompt([
             {
               type: "input",
@@ -91,13 +92,14 @@ async function init() {
               choices: roles,
             },
             {
-              type: "input",
-              message: "What is the manager's id of this employee?",
-              name: "manager_id",
+              type: "list",
+              message: "Who is the manager of this employee?",
+              choices: managerList,
+              name: "manager",
             },
           ]);
-          db.addEmployee(first_name, last_name, role, manager_id);
-          // db.endConnection();
+          // console.log(first_name, last_name, role, manager);
+          db.addEmployee(first_name, last_name, role, manager);
           break;
         case "Update Employee Role":
           const updateRoles = await db.returnRoles();
